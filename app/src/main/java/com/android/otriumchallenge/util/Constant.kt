@@ -12,7 +12,7 @@ class Constant {
         const val BASE_URL = "https://api.github.com/"
         const val HEADER_CONTENT_TYPE = "Content-Type"
         const val HEADER_APPLICATION_JSON = "application/json"
-        const val BEARER_TOKEN = "bearer a0686d03f74eada752e09450187f1593eddb129c"
+        const val BEARER_TOKEN = "bearer d42fde4722812fe3256ade4c9593ee9ff8cf1196"
         const val QUERY_KEY = "query"
         const val USER_NAME = "user_name"
         const val USER_IMAGE_URL = "user_image_url"
