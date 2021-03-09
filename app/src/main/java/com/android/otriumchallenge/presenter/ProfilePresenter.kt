@@ -7,6 +7,7 @@ import com.android.otriumchallenge.view.ProfileView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import org.json.JSONObject
+import java.util.Objects.isNull
 import java.util.concurrent.TimeUnit
 
 class ProfilePresenter(private val profileView: ProfileView) : BasePresenter(profileView) {
@@ -45,6 +46,11 @@ class ProfilePresenter(private val profileView: ProfileView) : BasePresenter(pro
      * repository array list
      */
     fun setUpRepositoryList(viewer: Viewer?) {
+
+        if (viewer == null) {
+            return
+        }
+
         var repositoryList = ArrayList<Repository>()
 
         // adding heading label to show a label
@@ -100,6 +106,10 @@ class ProfilePresenter(private val profileView: ProfileView) : BasePresenter(pro
 
             //save cash as json
             getStoreManager().saveCashedData(viewer)
+
+            profileView.onSaveCashedData()
+
+
         }
     }
 

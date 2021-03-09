@@ -10,7 +10,7 @@ import com.android.otriumchallenge.di.module.RestApiModule
 open class App : Application() {
 
     companion object {
-         var appComponent: AppComponent? = null
+        lateinit var appComponent: AppComponent
     }
 
     override fun onCreate() {

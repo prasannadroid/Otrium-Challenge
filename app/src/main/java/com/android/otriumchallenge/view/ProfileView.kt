@@ -10,4 +10,6 @@ interface ProfileView : BaseView {
     fun setAdaptor(repositoryList: ArrayList<Repository>)
 
     fun invalidQuery()
+
+    fun onSaveCashedData()
 }

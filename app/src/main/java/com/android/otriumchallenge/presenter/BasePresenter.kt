@@ -23,7 +23,7 @@ open class BasePresenter(private val baseView: BaseView) {
     lateinit var appContext: Context
 
     init {
-        App.appComponent?.inject(this)
+        App.appComponent.inject(this)
     }
 
     fun getApi() = restAPI

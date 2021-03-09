@@ -91,8 +91,12 @@ class PinnedAdaptorPresenter(
                                 primaryLang.name ?: getApp().getString(R.string.empty)
 
                             primaryLang.color?.let { colorStr ->
-                                holderCast.cardView.setCardBackgroundColor(Color.parseColor(colorStr))
-                                holderCast.cardView.visibility = View.VISIBLE
+                                // set card view language color bubble
+                                holderCast.cardView.apply {
+                                    setCardBackgroundColor(Color.parseColor(colorStr))
+                                    visibility = View.VISIBLE
+                                    elevation = 0f
+                                }
                             }
 
                             // Set the description and set empty value if description null

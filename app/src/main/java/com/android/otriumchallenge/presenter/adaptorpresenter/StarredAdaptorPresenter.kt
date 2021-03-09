@@ -47,8 +47,12 @@ class StarredAdaptorPresenter(starredAdaptorView: StarredAdaptorView) :
                         primaryLang.name ?: getApp().getString(R.string.empty)
 
                     primaryLang.color?.let { colorStr ->
-                        holder.cardView.setCardBackgroundColor(Color.parseColor(colorStr))
-                        holder.cardView.visibility = View.VISIBLE
+                        // set card view language color bubble
+                        holder.cardView.apply {
+                            setCardBackgroundColor(Color.parseColor(colorStr))
+                            visibility = View.VISIBLE
+                            elevation = 0f
+                        }
                     }
 
                     // Set the description and set empty value if description null

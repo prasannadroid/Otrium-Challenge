@@ -2,6 +2,7 @@ package com.android.otriumchallenge.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import butterknife.BindView
+import com.android.otriumchallenge.App
 import com.android.otriumchallenge.R
 import com.android.otriumchallenge.adapter.PinnedRepoAdaptor
 import com.android.otriumchallenge.api.model.Viewer
@@ -19,6 +21,8 @@ import com.android.otriumchallenge.util.Constant
 import com.android.otriumchallenge.view.ProfileView
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
+import org.w3c.dom.Text
+import javax.inject.Inject
 
 
 @SuppressLint("NonConstantResourceId")
@@ -41,6 +45,15 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
 
     @BindView(R.id.recycleView)
     lateinit var recyclerView: RecyclerView
+
+    @BindView(R.id.profileTextView)
+    lateinit var profileTxt: TextView
+
+    @BindView(R.id.followingLabel)
+    lateinit var followingLabel: TextView
+
+    @BindView(R.id.followersLabel)
+    lateinit var followerLabel: TextView
 
     @BindView(R.id.avatarImageView)
     lateinit var avatarImage: ImageView
@@ -69,12 +82,19 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
 
     // this method will setup recycle view
     private fun setupRecycleView() {
-        recyclerView.layoutManager = (LinearLayoutManager(this))
+        var layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = (layoutManager)
         recyclerView.addItemDecoration(DividerItemDecoration(this, 0))
+        recyclerView.isNestedScrollingEnabled = true
+        recyclerView.setHasFixedSize(false)
     }
 
     // this method will set adaptor to recycle view
     override fun setAdaptor(repositoryList: ArrayList<Repository>) {
+        profileTxt.visibility = View.VISIBLE
+        followerLabel.visibility = View.VISIBLE
+        followingLabel.visibility = View.VISIBLE
+
         swipeRefreshLayout.isRefreshing = false
         recyclerView.adapter = PinnedRepoAdaptor(this, repositoryList, this)
     }
@@ -96,7 +116,7 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
         userNameTxt.text = viewer?.name ?: getString(R.string.empty)
         userLoginTxt.text = viewer?.login ?: getString(R.string.empty)
         userEmail.text = viewer?.email
-            ?: getString(R.string.sample_email) // sample email will return of email is empty
+            ?: getString(R.string.sample_email) // sample email will return if email is empty
 
         viewer?.follower?.let {
             followerTxt.text = it.totalCount.toString()
@@ -135,5 +155,9 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
 
     override fun invalidQuery() {
         Toast.makeText(this, getString(R.string.invalid_query), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onSaveCashedData() {
+
     }
 }

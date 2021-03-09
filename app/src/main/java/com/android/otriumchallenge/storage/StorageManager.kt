@@ -13,10 +13,10 @@ class StorageManager(context: Context) {
     )
 
     fun saveUerName(userName: String) =
-        sharedPreferences.edit().putString(Constant.USER_NAME, userName).apply()
+        sharedPreferences.edit().putString(Constant.USER_NAME, userName).commit()
 
     fun saveUserImageUrl(userImageUrl: String) =
-        sharedPreferences.edit().putString(Constant.USER_IMAGE_URL, userImageUrl).apply()
+        sharedPreferences.edit().putString(Constant.USER_IMAGE_URL, userImageUrl).commit()
 
     // this method will save the last saved date as milliseconds
     fun saveCashedTimeMills(timeMills: Long) =

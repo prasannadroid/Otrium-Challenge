@@ -45,11 +45,14 @@ class TopAdaptorPresenter(topAdapterView: TopAdapterView) : BasePresenter(topAda
                         primaryLang.name ?: getApp().getString(R.string.empty)
 
                     primaryLang.color?.let { colorStr ->
-                        holder.cardView.setCardBackgroundColor(Color.parseColor(colorStr))
-                        // By default card view is invisible
-                        holder.cardView.visibility = View.VISIBLE
+                        // set card view language color bubble
+                        holder.cardView.apply {
+                            setCardBackgroundColor(Color.parseColor(colorStr))
+                            // by default card view is invisible
+                            visibility = View.VISIBLE
+                            elevation = 0f
+                        }
                     }
-
                     // Set the description and set empty value if description null
                     holder.repoDescription.text =
                         repository.description ?: getApp().getString(R.string.empty)
