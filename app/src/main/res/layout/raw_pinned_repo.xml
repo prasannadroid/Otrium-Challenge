@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/repo_border_bg"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:id="@+id/avatarImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/userNameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/sans_pro_regular"
+            android:textColor="@color/font_color"
+            android:textSize="@dimen/label"
+            card_view:layout_constraintBottom_toBottomOf="@+id/avatarImageView"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toEndOf="@+id/avatarImageView"
+            card_view:layout_constraintTop_toTopOf="@+id/avatarImageView" />
+
+        <TextView
+            android:id="@+id/reponNameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/sans_pro_bold"
+            android:textColor="@color/font_color"
+            android:textSize="@dimen/label"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="@+id/avatarImageView"
+            card_view:layout_constraintTop_toBottomOf="@+id/userNameTextView" />
+
+        <TextView
+            android:id="@+id/repoDesctiptionTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/sans_pro_regular"
+            android:maxLength="40"
+            android:textColor="@color/font_color"
+            android:textSize="@dimen/label"
+            card_view:layout_constraintEnd_toEndOf="@+id/reponNameTextView"
+            card_view:layout_constraintStart_toStartOf="@+id/reponNameTextView"
+            card_view:layout_constraintTop_toBottomOf="@+id/reponNameTextView" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            card_view:layout_constraintStart_toStartOf="@+id/repoDesctiptionTextView"
+            card_view:layout_constraintTop_toBottomOf="@+id/repoDesctiptionTextView"
+            card_view:srcCompat="@drawable/ic_baseline_star_24" />
+
+        <TextView
+            android:id="@+id/staredTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/sans_pro_regular"
+            android:textColor="@color/font_color"
+            android:textSize="@dimen/label"
+            card_view:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            card_view:layout_constraintStart_toEndOf="@+id/imageView4"
+            card_view:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/langCardView"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="32dp"
+            card_view:cardCornerRadius="8dp"
+            card_view:layout_constraintBottom_toBottomOf="@+id/staredTextView"
+            card_view:layout_constraintStart_toEndOf="@+id/staredTextView"
+            card_view:layout_constraintTop_toTopOf="@+id/staredTextView" />
+
+
+        <TextView
+            android:id="@+id/repoLangText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/sans_pro_regular"
+            android:textColor="@color/font_color"
+            android:textSize="@dimen/label"
+            card_view:layout_constraintBottom_toBottomOf="@+id/langCardView"
+            card_view:layout_constraintStart_toEndOf="@+id/langCardView"
+            card_view:layout_constraintTop_toTopOf="@+id/langCardView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
