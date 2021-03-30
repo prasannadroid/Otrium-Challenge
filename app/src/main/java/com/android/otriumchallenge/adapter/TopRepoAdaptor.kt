@@ -5,14 +5,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.otriumchallenge.adapter.viewholder.RepoViewHolder
 import com.android.otriumchallenge.model.TopRepository
 import com.android.otriumchallenge.presenter.adaptorpresenter.TopAdaptorPresenter
+import com.android.otriumchallenge.util.AppUtil
 import com.android.otriumchallenge.view.adaptorview.TopAdapterView
 
 class TopRepoAdaptor(
+    private val appUtil: AppUtil,
     private val topRepository: TopRepository, private val adaptorSize: Int
 ) :
     RecyclerView.Adapter<RepoViewHolder>(), TopAdapterView {
 
-    var topAdapterPresenter = TopAdaptorPresenter(this)
+    var topAdapterPresenter = TopAdaptorPresenter(appUtil)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
         return topAdapterPresenter.onCreateViewHolder(parent)

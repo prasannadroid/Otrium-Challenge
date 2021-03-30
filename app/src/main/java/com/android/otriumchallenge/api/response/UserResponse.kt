@@ -4,6 +4,6 @@ import com.android.otriumchallenge.api.model.Data
 import com.android.otriumchallenge.api.model.Viewer
 import com.google.gson.annotations.SerializedName
 
-class UserResponse {
+open class UserResponse {
     var data: Data? = null
 }

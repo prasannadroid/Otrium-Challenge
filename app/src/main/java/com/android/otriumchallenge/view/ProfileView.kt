@@ -9,7 +9,15 @@ interface ProfileView : BaseView {
 
     fun setAdaptor(repositoryList: ArrayList<Repository>)
 
+    fun welcomeMessage()
+
     fun invalidQuery()
 
+    fun authenticationError()
+
     fun onSaveCashedData()
+
+    fun unknownError()
+
+    fun handleApiError(it: Throwable)
 }

@@ -4,7 +4,7 @@ import com.android.otriumchallenge.model.*
 import com.google.gson.annotations.SerializedName
 import javax.inject.Inject
 
-class Viewer @Inject constructor() {
+open class Viewer @Inject constructor() {
 
     var name: String? = null
 

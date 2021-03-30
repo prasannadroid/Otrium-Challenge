@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import com.android.otriumchallenge.R
 import com.android.otriumchallenge.adapter.viewholder.RepoViewHolder
 import com.android.otriumchallenge.model.RepositoryNode
-import com.android.otriumchallenge.presenter.BasePresenter
-import com.android.otriumchallenge.view.adaptorview.StarredAdaptorView
+import com.android.otriumchallenge.util.AppUtil
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import java.lang.Exception
 
-class StarredAdaptorPresenter(starredAdaptorView: StarredAdaptorView) :
-    BasePresenter(starredAdaptorView) {
+class StarredAdaptorPresenter(appUtil: AppUtil) {
+
+    private val storageManager = appUtil.storageManager
+    private val appContext = appUtil.context
 
     fun onCreateViewHolder(parent: ViewGroup): RepoViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -35,16 +35,16 @@ class StarredAdaptorPresenter(starredAdaptorView: StarredAdaptorView) :
 
                 // set user name
                 holder.userNameTxt.text =
-                    getStoreManager().getUserName() ?: getApp().getString(R.string.empty)
+                    storageManager.getUserName() ?: appContext.getString(R.string.empty)
 
                 // Node object will be represent Repository
-                holder.repoNameText.text = repository.name ?: getApp().getString(R.string.empty)
+                holder.repoNameText.text = repository.name ?: appContext.getString(R.string.empty)
 
                 // Set primary language details like language name, color
                 repository.primaryLanguage?.let { primaryLang ->
 
                     holder.repoLangTxt.text =
-                        primaryLang.name ?: getApp().getString(R.string.empty)
+                        primaryLang.name ?: appContext.getString(R.string.empty)
 
                     primaryLang.color?.let { colorStr ->
                         // set card view language color bubble
@@ -57,7 +57,7 @@ class StarredAdaptorPresenter(starredAdaptorView: StarredAdaptorView) :
 
                     // Set the description and set empty value if description null
                     holder.repoDescription.text =
-                        repository.description ?: getApp().getString(R.string.empty)
+                        repository.description ?: appContext.getString(R.string.empty)
                 }
 
                 repository.starGazer?.let { starGazer ->
@@ -67,7 +67,7 @@ class StarredAdaptorPresenter(starredAdaptorView: StarredAdaptorView) :
                 }
 
                 // set user image
-                getStoreManager().getUserImageUrl()?.let { url ->
+                storageManager.getUserImageUrl()?.let { url ->
                     Picasso.get().load(url).transform(CropCircleTransformation())
                         .into(holder.avatarImage)
                 }

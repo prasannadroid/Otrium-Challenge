@@ -13,17 +13,18 @@ import com.android.otriumchallenge.adapter.viewholder.PinnedRepoViewHolder
 import com.android.otriumchallenge.adapter.viewholder.StarredRepoViewHolder
 import com.android.otriumchallenge.adapter.viewholder.TopRepoViewHolder
 import com.android.otriumchallenge.model.*
-import com.android.otriumchallenge.presenter.BasePresenter
-import com.android.otriumchallenge.view.ProfileView
+import com.android.otriumchallenge.util.AppUtil
 import com.android.otriumchallenge.view.adaptorview.PinnedAdaptorView
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import java.lang.Exception
 
 class PinnedAdaptorPresenter(
+    private val appUtil: AppUtil,
     private val pinnedAdaptorView: PinnedAdaptorView,
-    profileView: ProfileView
-) : BasePresenter(profileView) {
+) {
+
+    private val storageManager = appUtil.storageManager
+    private val appContext = appUtil.context
 
     fun onCreateViewHolder(
         parent: ViewGroup,
@@ -34,27 +35,36 @@ class PinnedAdaptorPresenter(
         // Return different type of ViewHolders according to the repository type
         return when (repositoryList[position]) {
             is HeaderLabel -> {
+
                 // this is the pinned label shows on top
                 //  no adaptor need
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.raw_header_label, parent, false)
                 HeaderLabelViewHolder(view)
             }
+
+            // making pinned repository view and view holder
             is PinnedRepository -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.raw_pinned_repo, parent, false)
                 PinnedRepoViewHolder(view)
             }
+
+            // making top repository view and view holder
             is TopRepository -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.raw_top_recycle_view, parent, false)
                 TopRepoViewHolder(view)
             }
+
+            // making stared repository view and view holder
             is StarredRepository -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.raw_starred_recycle_view, parent, false)
                 StarredRepoViewHolder(view)
             }
+
+            // default will be a pinned view
             else -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.raw_pinned_repo, parent, false)
@@ -79,16 +89,17 @@ class PinnedAdaptorPresenter(
                     repository.node?.let {
 
                         // set user name
-                        holder.userNameTxt.text =
-                            getStoreManager().getUserName() ?: getApp().getString(R.string.empty)
+                        holderCast.userNameTxt.text =
+                            storageManager.getUserName() ?: appContext.getString(R.string.empty)
 
-                        holderCast.repoNameText.text = it.name ?: getApp().getString(R.string.empty)
+                        holderCast.repoNameText.text =
+                            it.name ?: appContext.getString(R.string.empty)
 
                         // Set primary language details like language name, color
                         it.primaryLanguage?.let { primaryLang ->
 
                             holderCast.repoLangTxt.text =
-                                primaryLang.name ?: getApp().getString(R.string.empty)
+                                primaryLang.name ?: appContext.getString(R.string.empty)
 
                             primaryLang.color?.let { colorStr ->
                                 // set card view language color bubble
@@ -101,7 +112,7 @@ class PinnedAdaptorPresenter(
 
                             // Set the description and set empty value if description null
                             holderCast.repoDescription.text =
-                                it.description ?: getApp().getString(R.string.empty)
+                                it.description ?: appContext.getString(R.string.empty)
                         }
 
                         it.starGazer?.let { starGazer ->
@@ -111,9 +122,9 @@ class PinnedAdaptorPresenter(
                         }
 
                         // set user image
-                        getStoreManager().getUserImageUrl()?.let { url ->
+                        storageManager.getUserImageUrl()?.let { url ->
                             Picasso.get().load(url).transform(CropCircleTransformation())
-                                .into(holder.avatarImage)
+                                .into(holderCast.avatarImage)
                         }
 
                     }
@@ -124,7 +135,7 @@ class PinnedAdaptorPresenter(
                     repository.nodes?.let {
                         val holderCast = holder as TopRepoViewHolder
                         pinnedAdaptorView.setupTopRepoAdaptor(
-                            TopRepoAdaptor(repository, it.size),
+                            TopRepoAdaptor(appUtil, repository, it.size),
                             holderCast.recyclerView
                         )
                     }
@@ -136,7 +147,7 @@ class PinnedAdaptorPresenter(
                     repository.nodes?.let {
                         val holderCast = holder as StarredRepoViewHolder
                         pinnedAdaptorView.setupStarredRepoAdaptor(
-                            StarredRepoAdaptor(repository, it.size),
+                            StarredRepoAdaptor(appUtil, repository, it.size),
                             holderCast.recyclerView
                         )
                     }
