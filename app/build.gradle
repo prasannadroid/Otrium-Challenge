@@ -25,7 +25,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-
+    id 'org.jetbrains.dokka-android'
 }
 
 android {
@@ -61,6 +61,7 @@ android {
         unitTests.returnDefaultValues = true
 
     }
+
 }
 
 dependencies {
@@ -119,3 +120,5 @@ dependencies {
     implementation "jp.wasabeef:picasso-transformations:$picasso_transform"
 
 }
+
+//apply from: 'https://raw.github.com/Vorlonsoft/EasyDokkaPlugin/master/dokka.gradle'

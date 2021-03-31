@@ -4,6 +4,12 @@ import com.android.otriumchallenge.util.Constant
 import okhttp3.Interceptor
 import okhttp3.Response
 
+/**
+ * Http header interceptor will handle the ContentType header and the
+ * Authorization header with toke.
+ *
+ * @constructor Create empty Http header interceptor.
+ */
 class HttpHeaderInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {

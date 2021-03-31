@@ -17,6 +17,12 @@ import retrofit2.HttpException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
+/**
+ * Base activity will be the super class for all activities in this project.
+ *
+ *
+ * @constructor Create empty Base activity
+ */
 abstract class BaseActivity : AppCompatActivity() {
 
     private var progressBar: AlertDialog? = null
@@ -33,6 +39,13 @@ abstract class BaseActivity : AppCompatActivity() {
     @Inject
     lateinit var appContext: Context
 
+    /**
+     * On create will be the initial method call for activity and this will
+     * initialize butter knife, progressBar, setupView, and Inject dagger objects to
+     * the base activity.
+     *
+     * @param savedInstanceState
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutResID())
@@ -52,12 +65,21 @@ abstract class BaseActivity : AppCompatActivity() {
         setupDependencies()
     }
 
+    /**
+     * Setup dependencies will setup dagger object
+     * to the AppUtil class.
+     *
+     */
     private fun setupDependencies() {
         appUtil.context = appContext
         appUtil.endPoint = endPoint
         appUtil.storageManager = storageManager
     }
 
+    /**
+     * Setup progress bar will initialize Alert dialog.
+     *
+     */
     private fun setupProgressBar() {
         progressBar = AlertDialog.Builder(this, R.style.CustomDialog).create()
         progressBar?.setView(LayoutInflater.from(this).inflate(R.layout.progress_bar, null))
@@ -65,18 +87,42 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Show progress dialog will display Alert dialog.
+     *
+     */
     fun showProgressDialog() {
         progressBar?.show()
     }
 
+    /**
+     * Show progress dialog will hide Alert dialog.
+     *
+     */
     fun hideProgressDialog() {
         progressBar?.dismiss()
     }
 
+    /**
+     * Get layout res i d will return layout from the sub class.
+     *
+     * @return Int (Layout)
+     */
     abstract fun getLayoutResID(): Int
 
+    /**
+     * Setup view will invoke after base activity onCreate.
+     *
+     * @param savedInstanceState
+     */
     abstract fun setupView(savedInstanceState: Bundle?)
 
+    /**
+     * Handle api error
+     *
+     * @param view will be the ui view engaging with the Presenter.
+     * @param it will be the Throwable of RX call.
+     */
     fun handleApiError(view: BaseView, it: Throwable) {
         view.hideProgress()
         it.printStackTrace()
@@ -91,7 +137,10 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    // show unknown error message as Toast
+    /**
+     * Show unknown error when there is no Status code specific error.
+     *
+     */
     private fun showUnknownError() {
         Toast.makeText(
             appContext.applicationContext,
@@ -101,7 +150,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
-    // show Network error message as Toast
+    /**
+     * Show network error when there is no network connection.
+     *
+     */
     private fun showNetworkError() {
         Toast.makeText(
             appContext,
@@ -111,7 +163,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
-    // show Authentication error message as Toast
+    /**
+     * Handle http exception HTTP code 401 error.
+     *
+     * @param it
+     */
     open fun handleHttpException(it: HttpException) {
         if (it.code() == 401) {
             Toast.makeText(

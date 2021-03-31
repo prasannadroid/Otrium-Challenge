@@ -7,6 +7,15 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
+/**
+ * Data store module will provide StorageManager object with initialized share preferences object
+ * in the constructor.
+ *
+ *
+ * @constructor
+ *
+ * @param applicationContext from App class.
+ */
 @Module
 class DataStoreModule(applicationContext: Context) {
 

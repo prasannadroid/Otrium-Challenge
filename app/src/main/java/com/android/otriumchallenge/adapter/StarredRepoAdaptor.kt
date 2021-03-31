@@ -8,6 +8,15 @@ import com.android.otriumchallenge.presenter.adaptorpresenter.StarredAdaptorPres
 import com.android.otriumchallenge.util.AppUtil
 import com.android.otriumchallenge.view.adaptorview.StarredAdaptorView
 
+/**
+ * Starred repo adaptor will handle the Starred repository and provide adaptor to RecycleView.
+ *
+ * @property topRepository
+ * @property adaptorSize
+ * @constructor
+ *
+ * @param appUtil
+ */
 class StarredRepoAdaptor(
     appUtil: AppUtil,
     private val topRepository: StarredRepository,

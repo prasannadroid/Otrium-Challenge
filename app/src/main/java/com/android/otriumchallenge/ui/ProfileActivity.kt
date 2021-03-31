@@ -20,7 +20,11 @@ import com.android.otriumchallenge.view.ProfileView
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 
-
+/**
+ * Profile activity will display the profile and its related all views as one screen.
+ *
+ * @constructor Create empty Profile activity
+ */
 @SuppressLint("NonConstantResourceId")
 class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -63,7 +67,11 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
 
     lateinit var profilePresenter: ProfilePresenter
 
-    // this method will call in the first place
+    /**
+     * Setup view will call at the first time of the activity.
+     *
+     * @param savedInstanceState
+     */
     override fun setupView(savedInstanceState: Bundle?) {
         profilePresenter = ProfilePresenter(appUtil, this)
         profilePresenter.fetchUserProfile()
@@ -71,7 +79,9 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
         swipeRefreshLayout.setOnRefreshListener(this)
     }
 
-    // this method will set the layout
+    /**
+     * set layout to the base activity content view.
+     */
     override fun getLayoutResID() = R.layout.activity_profile
 
     // this method will call after the successful API call for use profile
@@ -101,17 +111,22 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
         recyclerView.adapter = PinnedRepoAdaptor(appUtil, repositoryList) // set the adaptor
     }
 
-    // show progress when api call
+    /** show progress when api call. */
     override fun showProgress() {
         super.showProgressDialog()
     }
 
-    // hide progress when api result
+    /** hide progress when api result. */
     override fun hideProgress() {
         super.hideProgressDialog()
     }
 
-    // set data to profile
+    /**
+     * Set profile data will set all the profile related information including
+     * user name,user image, email and followers.
+     *
+     * @param viewer will hold user information from graphQL object.
+     */
     private fun setProfileData(viewer: Viewer?) {
 
         this.viewer = viewer
@@ -142,23 +157,37 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
 
     }
 
-    // this method will run in background and save user name in data store pref
+    /**
+     * Save name will passe user name to the presenter layer.
+     *
+     * @param userName user name of github user
+     */
     private fun saveName(userName: String?) =
         profilePresenter.saveUserName(userName)
 
 
-    // this method will run in background and save user image url in data store pref
+    /**
+     * Save avatar url method will pass user avatar url to the presenter layer.
+     *
+     * @param imageUrl user image url of github user
+     */
     private fun saveAvatarUrl(imageUrl: String?) =
         profilePresenter.saveAvatarUrl(imageUrl)
 
-    // this method will call after pull refresh and re fetch user profile
+    /**
+     * On refresh method will call when user pull to refresh the profile.
+     *
+     */
     override fun onRefresh() {
         swipeRefreshLayout.isRefreshing = true
         profilePresenter.fetchUserProfile()
         profilePresenter.saveCashData(viewer)
     }
 
-    // this method will show welcome message only once
+    /**
+     * Welcome message method will call only one time after user navigate to the profile.
+     *
+     */
     override fun welcomeMessage() {
         if (!isWelcomeMessageShown) {
             Toast.makeText(this, getString(R.string.welcome_message), Toast.LENGTH_SHORT).show()
@@ -166,27 +195,45 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
         }
     }
 
-    // error message for invalid GraphQL query
+    /**
+     * Invalid query method will call from the view when graphQA is wrong.
+     *
+     */
     override fun invalidQuery() {
         Toast.makeText(this, getString(R.string.invalid_query), Toast.LENGTH_SHORT).show()
         swipeRefreshLayout.isRefreshing = false
 
     }
 
-    // error message for user authentication
+    /**
+     * Authentication method error will be call when HTTP code is 401.
+     *
+     */
     override fun authenticationError() {
         Toast.makeText(this, getString(R.string.authentication_error), Toast.LENGTH_SHORT).show()
         swipeRefreshLayout.isRefreshing = false
     }
 
-    // this method will call after saving profile
+    /**
+     * On save cashed data method will save user profile data for every 24 hours if user pull and refresh the
+     * profile.
+     *
+     */
     override fun onSaveCashedData() =
         Toast.makeText(this, getString(R.string.cashed_for_a_day), Toast.LENGTH_SHORT).show()
 
-    // error for api call generate unknown
+    /**
+     * Unknown error method call when RX call error beyond HTTP codes.
+     *
+     */
     override fun unknownError() =
         Toast.makeText(this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show()
 
-    // error handling in BaseActivity when api call throws an error
+    /**
+     * Handle api error method will call when error in the retrofit call.
+     *
+     *
+     * @param it throwable
+     */
     override fun handleApiError(it: Throwable) = handleApiError(this, it)
 }

@@ -3,6 +3,12 @@ package com.android.otriumchallenge.view
 import com.android.otriumchallenge.api.model.Viewer
 import com.android.otriumchallenge.model.Repository
 
+/**
+ * Profile view will handle all the UI related functins and
+ * update the profile activity
+ *
+ * @constructor Create empty Profile view
+ */
 interface ProfileView : BaseView {
 
     fun onProfileResponse(viewer: Viewer?)

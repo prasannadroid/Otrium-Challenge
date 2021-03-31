@@ -8,6 +8,15 @@ import com.android.otriumchallenge.presenter.adaptorpresenter.TopAdaptorPresente
 import com.android.otriumchallenge.util.AppUtil
 import com.android.otriumchallenge.view.adaptorview.TopAdapterView
 
+/**
+ * Top repo adaptor will handle the Top repository list and provide adaptor to RecycleView.
+ *
+ * @property topRepository
+ * @property adaptorSize
+ * @constructor
+ *
+ * @param appUtil
+ */
 class TopRepoAdaptor(
     appUtil: AppUtil,
     private val topRepository: TopRepository, private val adaptorSize: Int

@@ -15,6 +15,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+/**
+ * Rest api module will provide Gson, LoginInterceptor, and Retrofit objects.
+ *
+ * @constructor Create empty Rest api module.
+ */
 @Module
 class RestApiModule {
 
@@ -22,12 +27,22 @@ class RestApiModule {
     @Provides
     fun provideGson(): Gson = GsonBuilder().setLenient().create()
 
+    /**
+     * Provide http login interceptor will give HttpLoggingInterceptor object with
+     * disabled login level.
+     *
+     */
     @Singleton
     @Provides
     fun provideHttpLoginInterceptor() = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.NONE // No logging messages
     }
 
+    /**
+     * Provide http client will give okHTTPClient object.
+     *
+     * @param httpLoggingInterceptor from dagger
+     */
     @Singleton
     @Provides
     fun provideHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor) =
@@ -38,6 +53,13 @@ class RestApiModule {
             .addInterceptor(HttpHeaderInterceptor())
             .addInterceptor(httpLoggingInterceptor).build()
 
+    /**
+     * Provide retrofit object with base url.
+     *
+     * @param httpClient
+     * @param gSon
+     * @return
+     */
     @Singleton
     @Provides
     fun provideRetrofit(httpClient: OkHttpClient, gSon: Gson): Retrofit =

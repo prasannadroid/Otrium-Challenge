@@ -11,6 +11,13 @@ import com.android.otriumchallenge.util.AppUtil
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 
+/**
+ * Top adaptor presenter to manage business logic from Top Adaptor and update UI.
+ *
+ * @constructor
+ *
+ * @param appUtil
+ */
 class TopAdaptorPresenter(appUtil: AppUtil) {
 
     private val storageManager = appUtil.storageManager

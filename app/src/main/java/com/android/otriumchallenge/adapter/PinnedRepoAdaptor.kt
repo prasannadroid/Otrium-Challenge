@@ -8,7 +8,14 @@ import com.android.otriumchallenge.presenter.adaptorpresenter.PinnedAdaptorPrese
 import com.android.otriumchallenge.util.AppUtil
 import com.android.otriumchallenge.view.adaptorview.PinnedAdaptorView
 
-
+/**
+ * Pinned repo adaptor will handle the Pinned repository and provide adaptor to RecycleView.
+ *
+ * @property repositoryList pinned repository list.
+ * @constructor
+ *
+ * @param appUtil dagger objects util class.
+ */
 class PinnedRepoAdaptor(
     appUtil: AppUtil,
     private val repositoryList: ArrayList<Repository>,

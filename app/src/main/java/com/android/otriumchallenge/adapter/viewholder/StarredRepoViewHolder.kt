@@ -7,6 +7,13 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.android.otriumchallenge.R
 
+/**
+ * Starred repo view holder for Starred repo recycle view items.
+ *
+ * @constructor
+ *
+ * @param view
+ */
 class StarredRepoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     @SuppressLint("NonConstantResourceId")
