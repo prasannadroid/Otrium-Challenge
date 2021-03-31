@@ -11,6 +11,13 @@ import com.android.otriumchallenge.util.AppUtil
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 
+/**
+ * Starred adaptor presenter to manage business logic from Starred adaptor and update UI.
+ *
+ * @constructor
+ *
+ * @param appUtil
+ */
 class StarredAdaptorPresenter(appUtil: AppUtil) {
 
     private val storageManager = appUtil.storageManager

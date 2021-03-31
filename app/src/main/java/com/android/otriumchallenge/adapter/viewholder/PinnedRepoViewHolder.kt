@@ -10,6 +10,13 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.android.otriumchallenge.R
 
+/**
+ * Pinned repo view holder for Pinned item recycle view.
+ *
+ * @constructor
+ *
+ * @param view
+ */
 @SuppressLint("NonConstantResourceId")
 class PinnedRepoViewHolder( view: View) : RecyclerView.ViewHolder(view) {
 

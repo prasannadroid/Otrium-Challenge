@@ -6,24 +6,35 @@ import com.android.otriumchallenge.model.*
 import com.android.otriumchallenge.util.AppUtil
 import com.android.otriumchallenge.util.Constant
 import com.android.otriumchallenge.view.ProfileView
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
+/**
+ * Profile presenter will handle all the business logic related the the profile activity
+ * and update UI.
+ *
+ * @property appUtil will hold all dagger injected objects.
+ * @property profileView will be the interface for UI.
+ * @constructor Create empty Profile presenter.
+ */
 open class ProfilePresenter(private val appUtil: AppUtil, val profileView: ProfileView) {
 
     private val storageManager = appUtil.storageManager
     private val endpointService = appUtil.endPoint
 
+    /**
+     * Fetch user profile method will be send RX call to the graphQL API via retrofit
+     *  get user profile and repository related data.
+     *
+     */
     open fun fetchUserProfile() {
 
         // show progress
         profileView.showProgress()
 
-       // Json object will pass as QUERY from retrofit
+        // Json object will pass as QUERY from retrofit
         endpointService.fetchUserFromGit(Constant.QUERY).enqueue(object :
             Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
@@ -56,8 +67,8 @@ open class ProfilePresenter(private val appUtil: AppUtil, val profileView: Profi
     }
 
     /**
-     * this method will setup all 3 repositories as one
-     * repository array list
+     * this method will setup all 3 sub repositories as one
+     * main repository array list.
      */
     fun setUpRepositoryList(viewer: Viewer?) {
 
@@ -105,19 +116,32 @@ open class ProfilePresenter(private val appUtil: AppUtil, val profileView: Profi
         profileView.welcomeMessage()
     }
 
-    // save user name to shared pref
+    /**
+     * Save user name method will pass user name to save shared preferences.
+     *
+     * @param userName user name string from profile activity.
+     */
     fun saveUserName(userName: String?) =
         (userName != null && storageManager.getUserName()
             .isNullOrBlank()).takeIf { storageManager.saveUerName(userName) }
 
 
-    // save user image url to shared pref
+    /**
+     * Save avatar url method will pass user image url to save shared preferences.
+     *
+     * @param avatarUrl user url form profile activity.
+     */
     fun saveAvatarUrl(avatarUrl: String?) =
         (avatarUrl != null && storageManager.getUserImageUrl()
             .isNullOrBlank()).takeIf { storageManager.saveUserImageUrl(avatarUrl) }
 
 
-    // save cashing data for a one day
+    /**
+     * Save cash data method will check last cashed date as milliseconds and save
+     * to shared preferences.
+     *
+     * @param viewer grapQL user response object
+     */
     open fun saveCashData(viewer: Viewer?) {
 
         viewer?.let {
@@ -143,7 +167,10 @@ open class ProfilePresenter(private val appUtil: AppUtil, val profileView: Profi
         }
     }
 
-    // get saved date as milliseconds
+    /**
+     * Get last saved date method will get last saving date time as milliseconds.
+     *
+     */
     open fun getLastSavedDate() = appUtil.storageManager.getCashedTimeMills()
 
 }

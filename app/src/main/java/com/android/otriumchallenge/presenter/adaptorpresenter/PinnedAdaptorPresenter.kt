@@ -18,6 +18,14 @@ import com.android.otriumchallenge.view.adaptorview.PinnedAdaptorView
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 
+/**
+ * Pinned adaptor presenter for manage Pinned adaptor recycle view business
+ * logic and update adaptor UI.
+ *
+ * @property appUtil
+ * @property pinnedAdaptorView
+ * @constructor Create empty Pinned adaptor presenter
+ */
 class PinnedAdaptorPresenter(
     private val appUtil: AppUtil,
     private val pinnedAdaptorView: PinnedAdaptorView,

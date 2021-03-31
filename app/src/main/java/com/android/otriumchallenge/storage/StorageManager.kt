@@ -5,6 +5,13 @@ import com.android.otriumchallenge.api.model.Viewer
 import com.android.otriumchallenge.util.Constant
 import com.google.gson.Gson
 
+/**
+ * Storage manager will handle all the persistence data with android shared preferences.
+ *
+ *
+ * @property sharedPreferences initialized share preferences from Dagger DataStore module.
+ * @constructor Create empty Storage manager
+ */
 open class StorageManager(private val sharedPreferences: SharedPreferences) {
 
     // persist user name
