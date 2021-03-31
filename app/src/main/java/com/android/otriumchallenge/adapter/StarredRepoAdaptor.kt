@@ -15,7 +15,7 @@ class StarredRepoAdaptor(
 ) :
     RecyclerView.Adapter<RepoViewHolder>(), StarredAdaptorView {
 
-    var staredPresenter = StarredAdaptorPresenter(appUtil)
+    private var staredPresenter = StarredAdaptorPresenter(appUtil)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
         return staredPresenter.onCreateViewHolder(parent)

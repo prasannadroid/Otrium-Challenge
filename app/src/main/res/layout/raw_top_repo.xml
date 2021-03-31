@@ -26,7 +26,7 @@
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/userNameTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             card_view:layout_constraintStart_toEndOf="@+id/avatarImageView"
             card_view:layout_constraintTop_toTopOf="@+id/avatarImageView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/reponNameTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -51,11 +51,12 @@
             android:lines="1"
             android:textColor="@color/font_color"
             android:textSize="@dimen/label"
+            android:textStyle="bold"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="@+id/avatarImageView"
             card_view:layout_constraintTop_toBottomOf="@+id/userNameTextView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/repoDesctiptionTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -77,7 +78,7 @@
             card_view:layout_constraintTop_toBottomOf="@+id/repoDesctiptionTextView"
             card_view:srcCompat="@drawable/ic_baseline_star_24" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/staredTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -101,7 +102,7 @@
             card_view:layout_constraintStart_toEndOf="@+id/staredTextView"
             card_view:layout_constraintTop_toTopOf="@+id/staredTextView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/repoLangText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

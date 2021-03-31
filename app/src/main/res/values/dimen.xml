@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="tittle1">26sp</dimen>
+    <dimen name="tittle1">30sp</dimen>
     <dimen name="tittle2">20sp</dimen>
     <dimen name="tittle3">18sp</dimen>
     <dimen name="label">14sp</dimen>

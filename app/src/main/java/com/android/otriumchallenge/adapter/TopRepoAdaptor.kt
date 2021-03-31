@@ -9,7 +9,7 @@ import com.android.otriumchallenge.util.AppUtil
 import com.android.otriumchallenge.view.adaptorview.TopAdapterView
 
 class TopRepoAdaptor(
-    private val appUtil: AppUtil,
+    appUtil: AppUtil,
     private val topRepository: TopRepository, private val adaptorSize: Int
 ) :
     RecyclerView.Adapter<RepoViewHolder>(), TopAdapterView {

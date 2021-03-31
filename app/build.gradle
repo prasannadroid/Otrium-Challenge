@@ -35,6 +35,7 @@ android {
         applicationId "com.android.otriumchallenge"
         minSdkVersion 21
         targetSdkVersion 29
+        compileSdkVersion 29
         versionCode 1
         versionName "1.0"
 
