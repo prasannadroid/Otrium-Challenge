@@ -20,4 +20,9 @@
     <string name="unknown_error">Unknown Error</string>
     <string name="server_error">Server Error</string>
     <string name="authentication_error">Authentication Error</string>
+
+    // messages
+    <string name="cashed_for_a_day">Cashed profile for a one day!</string>
+    <string name="welcome_message">Welcome to my Profile!</string>
+
 </resources>

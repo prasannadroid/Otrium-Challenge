@@ -61,24 +61,24 @@
                         tools:srcCompat="@tools:sample/avatars" />
 
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/userNameTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:fontFamily="@font/sans_pro_bold"
+                        android:letterSpacing="0.1"
                         android:maxLines="2"
-                        android:text=" "
                         android:textColor="@color/font_color"
                         android:textSize="@dimen/tittle1"
+                        android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.025"
                         app:layout_constraintStart_toEndOf="@+id/avatarImageView"
                         app:layout_constraintTop_toTopOf="@+id/avatarImageView" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/loginNameTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -88,17 +88,18 @@
                         app:layout_constraintStart_toStartOf="@+id/userNameTextView"
                         app:layout_constraintTop_toBottomOf="@+id/userNameTextView" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/emailTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="32dp"
                         android:fontFamily="@font/sans_pro_bold"
                         android:textColor="@color/font_color"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="@+id/avatarImageView"
                         app:layout_constraintTop_toBottomOf="@+id/avatarImageView" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/followerTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -108,20 +109,21 @@
                         app:layout_constraintStart_toStartOf="@+id/emailTextView"
                         app:layout_constraintTop_toBottomOf="@+id/emailTextView" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/followersLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="4dp"
                         android:fontFamily="@font/sans_pro_regular"
                         android:text="@string/Followers"
                         android:textColor="@color/font_color"
+                        android:textFontWeight="400"
                         android:textSize="@dimen/label"
                         android:visibility="invisible"
                         app:layout_constraintStart_toEndOf="@+id/followerTextView"
                         app:layout_constraintTop_toTopOf="@+id/followerTextView" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/followingTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -131,11 +133,11 @@
                         app:layout_constraintBottom_toBottomOf="@+id/followersLabel"
                         app:layout_constraintStart_toEndOf="@+id/followersLabel" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/followingLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="4dp"
                         android:fontFamily="@font/sans_pro_regular"
                         android:text="@string/following"
                         android:textColor="@color/font_color"

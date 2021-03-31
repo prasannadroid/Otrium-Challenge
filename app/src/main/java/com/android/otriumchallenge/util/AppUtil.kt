@@ -1,13 +1,13 @@
 package com.android.otriumchallenge.util
 
-import android.graphics.*
+import android.content.Context
+import com.android.otriumchallenge.api.retrofit.EndpointService
+import com.android.otriumchallenge.storage.StorageManager
+import javax.inject.Inject
 
 
-class AppUtil {
-
-    companion object {
-        // fun
-
-    }
-
-}
+open class AppUtil @Inject constructor(
+    var context: Context,
+    var endPoint: EndpointService,
+    var storageManager: StorageManager
+)

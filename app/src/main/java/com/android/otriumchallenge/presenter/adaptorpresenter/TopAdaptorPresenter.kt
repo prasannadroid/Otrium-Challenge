@@ -7,13 +7,15 @@ import android.view.ViewGroup
 import com.android.otriumchallenge.R
 import com.android.otriumchallenge.adapter.viewholder.RepoViewHolder
 import com.android.otriumchallenge.model.RepositoryNode
-import com.android.otriumchallenge.presenter.BasePresenter
-import com.android.otriumchallenge.view.adaptorview.TopAdapterView
+import com.android.otriumchallenge.util.AppUtil
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 
-class TopAdaptorPresenter(topAdapterView: TopAdapterView) : BasePresenter(topAdapterView) {
+class TopAdaptorPresenter(appUtil: AppUtil) {
 
+    private val storageManager = appUtil.storageManager
+    private val appContext = appUtil.context
+    
     fun onCreateViewHolder(parent: ViewGroup): RepoViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.raw_top_repo, parent, false)
@@ -33,16 +35,16 @@ class TopAdaptorPresenter(topAdapterView: TopAdapterView) : BasePresenter(topAda
 
                 // set user name
                 holder.userNameTxt.text =
-                    getStoreManager().getUserName() ?: getApp().getString(R.string.empty)
+                    storageManager.getUserName() ?: appContext.getString(R.string.empty)
 
                 // Node object will be represent Repository
-                holder.repoNameText.text = repository.name ?: getApp().getString(R.string.empty)
+                holder.repoNameText.text = repository.name ?: appContext.getString(R.string.empty)
 
                 // Set primary language details like language name, color
                 repository.primaryLanguage?.let { primaryLang ->
 
                     holder.repoLangTxt.text =
-                        primaryLang.name ?: getApp().getString(R.string.empty)
+                        primaryLang.name ?: appContext.getString(R.string.empty)
 
                     primaryLang.color?.let { colorStr ->
                         // set card view language color bubble
@@ -55,7 +57,7 @@ class TopAdaptorPresenter(topAdapterView: TopAdapterView) : BasePresenter(topAda
                     }
                     // Set the description and set empty value if description null
                     holder.repoDescription.text =
-                        repository.description ?: getApp().getString(R.string.empty)
+                        repository.description ?: appContext.getString(R.string.empty)
                 }
 
                 repository.starGazer?.let { starGazer ->
@@ -65,7 +67,7 @@ class TopAdaptorPresenter(topAdapterView: TopAdapterView) : BasePresenter(topAda
                 }
 
                 // set user image
-                getStoreManager().getUserImageUrl()?.let { url ->
+                storageManager.getUserImageUrl()?.let { url ->
                     Picasso.get().load(url).transform(CropCircleTransformation())
                         .into(holder.avatarImage)
                 }

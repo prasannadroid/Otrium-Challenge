@@ -1,25 +1,24 @@
 package com.android.otriumchallenge.adapter
 
-import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.otriumchallenge.model.Repository
 import com.android.otriumchallenge.presenter.adaptorpresenter.PinnedAdaptorPresenter
-import com.android.otriumchallenge.view.ProfileView
+import com.android.otriumchallenge.util.AppUtil
 import com.android.otriumchallenge.view.adaptorview.PinnedAdaptorView
 
 
 class PinnedRepoAdaptor(
-    private val context: Context, private val repositoryList: ArrayList<Repository>,
-    profileView: ProfileView
+    appUtil: AppUtil,
+    private val repositoryList: ArrayList<Repository>,
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), PinnedAdaptorView {
 
     // position will determine the current position of a child view
     private var position = -1
 
-    var pinnedRepoPresenter = PinnedAdaptorPresenter(this, profileView)
+    var pinnedRepoPresenter = PinnedAdaptorPresenter(appUtil, this)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         position++
@@ -34,7 +33,7 @@ class PinnedRepoAdaptor(
     // Setup Top Repo Horizontal list view
     override fun setupTopRepoAdaptor(topRepoAdaptor: TopRepoAdaptor, recyclerView: RecyclerView) {
         recyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = topRepoAdaptor
     }
 
@@ -44,7 +43,7 @@ class PinnedRepoAdaptor(
         recyclerView: RecyclerView
     ) {
         recyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = starredRepoAdaptor
     }
 
