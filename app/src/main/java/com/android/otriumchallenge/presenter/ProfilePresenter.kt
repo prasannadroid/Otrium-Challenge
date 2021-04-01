@@ -29,7 +29,7 @@ open class ProfilePresenter(private val appUtil: AppUtil, val profileView: Profi
      *  get user profile and repository related data.
      *
      */
-    open fun fetchUserProfile() {
+    fun fetchUserProfile() {
 
         // show progress
         profileView.showProgress()
@@ -121,9 +121,10 @@ open class ProfilePresenter(private val appUtil: AppUtil, val profileView: Profi
      *
      * @param userName user name string from profile activity.
      */
-    fun saveUserName(userName: String?) =
+     fun saveUserName(userName: String?) =
         (userName != null && storageManager.getUserName()
-            .isNullOrBlank()).takeIf { storageManager.saveUerName(userName) }
+            .isNullOrBlank()).takeIf {
+            storageManager.saveUerName(userName) }
 
 
     /**
@@ -131,7 +132,7 @@ open class ProfilePresenter(private val appUtil: AppUtil, val profileView: Profi
      *
      * @param avatarUrl user url form profile activity.
      */
-    fun saveAvatarUrl(avatarUrl: String?) =
+     fun saveAvatarUrl(avatarUrl: String?) =
         (avatarUrl != null && storageManager.getUserImageUrl()
             .isNullOrBlank()).takeIf { storageManager.saveUserImageUrl(avatarUrl) }
 
@@ -142,7 +143,7 @@ open class ProfilePresenter(private val appUtil: AppUtil, val profileView: Profi
      *
      * @param viewer grapQL user response object
      */
-    open fun saveCashData(viewer: Viewer?) {
+    suspend fun saveCashData(viewer: Viewer?) {
 
         viewer?.let {
 
@@ -171,6 +172,6 @@ open class ProfilePresenter(private val appUtil: AppUtil, val profileView: Profi
      * Get last saved date method will get last saving date time as milliseconds.
      *
      */
-    open fun getLastSavedDate() = appUtil.storageManager.getCashedTimeMills()
+    fun getLastSavedDate() = appUtil.storageManager.getCashedTimeMills()
 
 }

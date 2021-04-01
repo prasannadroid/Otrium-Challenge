@@ -15,19 +15,19 @@ import com.google.gson.Gson
 open class StorageManager(private val sharedPreferences: SharedPreferences) {
 
     // persist user name
-    fun saveUerName(userName: String?) =
+     fun saveUerName(userName: String?) =
         sharedPreferences.edit().putString(Constant.USER_NAME, userName).commit()
 
     // persist avatar/image url
-    fun saveUserImageUrl(userImageUrl: String?) =
+     fun saveUserImageUrl(userImageUrl: String?) =
         sharedPreferences.edit().putString(Constant.USER_IMAGE_URL, userImageUrl).commit()
 
     // this method will save the last saved date as milliseconds
-    fun saveCashedTimeMills(timeMills: Long) =
+    suspend fun saveCashedTimeMills(timeMills: Long) =
         sharedPreferences.edit().putLong(Constant.CASHED_TIME, timeMills).commit()
 
     // persist github response as Json string
-    fun saveCashedData(viewer: Viewer?) =
+    suspend fun saveCashedData(viewer: Viewer?) =
         sharedPreferences.edit()
             .putString(Constant.CASHED_DATA, Gson().toJson(viewer).toString()).commit()
 

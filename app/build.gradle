@@ -4,7 +4,6 @@ buildscript {
     ext.dagger_version = '2.25.2'
     ext.retrofit_version = '2.9.0'
     ext.retrofit_scaler_version = '2.9.0'
-
     ext.okhttp_version = '4.7.2'
     ext.rx_kotlin_version = '2.0.0'
     ext.rx_android_version = '2.0.1'
@@ -17,6 +16,8 @@ buildscript {
     ext.mockito_version = '3.8.0'
     ext.powermock_version = '2.0.7'
     ext.powermock_extream = '1.6.6'
+    ext.coroutin_version = '1.4.2'
+    ext.ktx_version = '2.4.0-alpha01'
 
 
 }
@@ -119,6 +120,9 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$picasso_version"
     implementation "jp.wasabeef:picasso-transformations:$picasso_transform"
 
+    // kotlin - coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutin_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$ktx_version"
+
 }
 
-//apply from: 'https://raw.github.com/Vorlonsoft/EasyDokkaPlugin/master/dokka.gradle'

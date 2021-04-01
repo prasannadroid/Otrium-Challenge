@@ -6,6 +6,7 @@ import com.android.otriumchallenge.presenter.ProfilePresenter
 import com.android.otriumchallenge.storage.StorageManager
 import com.android.otriumchallenge.util.AppUtil
 import com.android.otriumchallenge.view.ProfileView
+import kotlinx.coroutines.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -80,7 +81,6 @@ class ProfileTest {
     }
 
 
-
     @Test
     fun testRepositoryList_WithNull() {
         profilePresenter.setUpRepositoryList(null)
@@ -95,32 +95,38 @@ class ProfileTest {
 
     @Test
     fun testCashedData_WithNull() {
-        profilePresenter.saveCashData(null)
-        verify(profileView, never()).onSaveCashedData()
+        CoroutineScope(Dispatchers.Main).async {
+            profilePresenter.saveCashData(null)
+            verify(profileView, never()).onSaveCashedData()
+        }.cancel()
     }
 
     @Test
     fun testCashedData_WithNoDateExceeded() {
+        CoroutineScope(Dispatchers.Main).async {
 
-        // add extra milliseconds to make last saved date grater than current date (time mills)
-        `when`(profilePresenter.getLastSavedDate()).thenReturn(System.currentTimeMillis() + extraTimeMills)
+            // add extra milliseconds to make last saved date grater than current date (time mills)
+            `when`(profilePresenter.getLastSavedDate()).thenReturn(System.currentTimeMillis() + extraTimeMills)
 
-        profilePresenter.saveCashData(viewer)
-        verify(profileView, never()).onSaveCashedData()
+            profilePresenter.saveCashData(viewer)
+            verify(profileView, never()).onSaveCashedData()
+        }.cancel()
     }
 
     @Test
     fun testCashedData_WithDateExceeded() {
+        CoroutineScope(Dispatchers.Main).async {
 
-        // reduce extra milliseconds to make last saved date less than current date (time mills)
-        `when`(profilePresenter.getLastSavedDate())
-            .thenReturn(System.currentTimeMillis() - extraTimeMills)
+            // reduce extra milliseconds to make last saved date less than current date (time mills)
+            `when`(profilePresenter.getLastSavedDate())
+                .thenReturn(System.currentTimeMillis() - extraTimeMills)
 
-        `when`(storageManager.saveCashedTimeMills(anyLong())).thenReturn(true)
-        `when`(storageManager.saveCashedData(viewer)).thenReturn(true)
+            `when`(storageManager.saveCashedTimeMills(anyLong())).thenReturn(true)
+            `when`(storageManager.saveCashedData(viewer)).thenReturn(true)
 
-        profilePresenter.saveCashData(viewer)
-        verify(profileView).onSaveCashedData()
+            profilePresenter.saveCashData(viewer)
+            verify(profileView).onSaveCashedData()
+        }.cancel()
     }
 
 }

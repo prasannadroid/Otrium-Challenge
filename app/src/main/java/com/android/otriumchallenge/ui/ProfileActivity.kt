@@ -1,11 +1,15 @@
 package com.android.otriumchallenge.ui
 
 import android.annotation.SuppressLint
+import android.net.Network
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,11 +18,19 @@ import butterknife.BindView
 import com.android.otriumchallenge.R
 import com.android.otriumchallenge.adapter.PinnedRepoAdaptor
 import com.android.otriumchallenge.api.model.Viewer
+import com.android.otriumchallenge.network.ConnectionStateMonitor
+import com.android.otriumchallenge.network.NetworkStatus
+import com.android.otriumchallenge.interfaces.OnNetworkAvailableListener
 import com.android.otriumchallenge.model.Repository
 import com.android.otriumchallenge.presenter.ProfilePresenter
 import com.android.otriumchallenge.view.ProfileView
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 /**
  * Profile activity will display the profile and its related all views as one screen.
@@ -26,7 +38,8 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
  * @constructor Create empty Profile activity
  */
 @SuppressLint("NonConstantResourceId")
-class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefreshListener {
+class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefreshListener,
+    OnNetworkAvailableListener {
 
     @BindView(R.id.userNameTextView)
     lateinit var userNameTxt: TextView
@@ -67,16 +80,39 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
 
     lateinit var profilePresenter: ProfilePresenter
 
+    private lateinit var snackBar: Snackbar
+
+    private lateinit var connectionStateMonitor: ConnectionStateMonitor
+
+    private var isFetchDataRxCallStart = false
+
     /**
      * Setup view will call at the first time of the activity.
      *
      * @param savedInstanceState
      */
     override fun setupView(savedInstanceState: Bundle?) {
+
+        //initialize profile presenter
         profilePresenter = ProfilePresenter(appUtil, this)
-        profilePresenter.fetchUserProfile()
+
+        // initialize recycle view
         setupRecycleView()
+
+        // initialize snack bar
+        setupSnackBar()
+
+        // set OnRefreshListener to profile activity
         swipeRefreshLayout.setOnRefreshListener(this)
+
+        // fetch user profile from graphQL via HTTP
+        profilePresenter.fetchUserProfile()
+
+        isFetchDataRxCallStart = true
+
+        // register broadcast receiver
+        registerNetworkBroadCastReceiver()
+
     }
 
     /**
@@ -87,12 +123,32 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
     // this method will call after the successful API call for use profile
     override fun onProfileResponse(viewer: Viewer?) {
         viewer?.let {
-            profilePresenter.setUpRepositoryList(viewer)
             setProfileData(viewer)
+            profilePresenter.setUpRepositoryList(viewer)
         }
     }
 
-    // this method will setup recycle view
+    /**
+     * Setup snack bar will show when device doesn't have Network connection.
+     *
+     */
+    private fun setupSnackBar() {
+        snackBar = Snackbar.make(
+            swipeRefreshLayout,
+            getString(R.string.no_network_connection),
+            Snackbar.LENGTH_INDEFINITE
+        )
+        var params = snackBar.view.layoutParams as FrameLayout.LayoutParams
+        params = params.apply {
+            gravity = Gravity.TOP // will display in the top
+        }
+
+        // set parent layout params with gravity top
+        snackBar.view.layoutParams = params
+        snackBar.dismiss() // make initially dismiss to make isShows False
+    }
+
+    /** this method will setup recycle view */
     private fun setupRecycleView() {
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = (layoutManager)
@@ -101,24 +157,25 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
         recyclerView.setHasFixedSize(false)
     }
 
-    // this method will set adaptor to recycle view
+    /** this method will set adaptor to recycle view */
     override fun setAdaptor(repositoryList: ArrayList<Repository>) {
+
+        // visible all the labels when result is ready to display
         profileTxt.visibility = View.VISIBLE
         followerLabel.visibility = View.VISIBLE
         followingLabel.visibility = View.VISIBLE
 
-        swipeRefreshLayout.isRefreshing = false
+        managePullToRefresh(false)
         recyclerView.adapter = PinnedRepoAdaptor(appUtil, repositoryList) // set the adaptor
     }
 
     /** show progress when api call. */
-    override fun showProgress() {
-        super.showProgressDialog()
-    }
+    override fun showProgress() = super.showProgressDialog()
 
     /** hide progress when api result. */
     override fun hideProgress() {
         super.hideProgressDialog()
+        isFetchDataRxCallStart = false
     }
 
     /**
@@ -153,6 +210,7 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
         // save user profile data
         saveName(viewer?.name)
 
+        // save user avatar url
         saveAvatarUrl(viewer?.avatarUrl)
 
     }
@@ -172,6 +230,8 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
      * @param imageUrl user image url of github user
      */
     private fun saveAvatarUrl(imageUrl: String?) =
+
+        //save avatar will run in the background
         profilePresenter.saveAvatarUrl(imageUrl)
 
     /**
@@ -179,9 +239,13 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
      *
      */
     override fun onRefresh() {
-        swipeRefreshLayout.isRefreshing = true
+        managePullToRefresh(true)
         profilePresenter.fetchUserProfile()
-        profilePresenter.saveCashData(viewer)
+
+        // save cashed data in background
+        lifecycleScope.launch {
+            profilePresenter.saveCashData(viewer)
+        }.start()
     }
 
     /**
@@ -201,8 +265,7 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
      */
     override fun invalidQuery() {
         Toast.makeText(this, getString(R.string.invalid_query), Toast.LENGTH_SHORT).show()
-        swipeRefreshLayout.isRefreshing = false
-
+        managePullToRefresh(false)
     }
 
     /**
@@ -211,7 +274,7 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
      */
     override fun authenticationError() {
         Toast.makeText(this, getString(R.string.authentication_error), Toast.LENGTH_SHORT).show()
-        swipeRefreshLayout.isRefreshing = false
+        managePullToRefresh(false)
     }
 
     /**
@@ -235,5 +298,61 @@ class ProfileActivity : BaseActivity(), ProfileView, SwipeRefreshLayout.OnRefres
      *
      * @param it throwable
      */
-    override fun handleApiError(it: Throwable) = handleApiError(this, it)
+    override fun handleApiError(it: Throwable) {
+        managePullToRefresh(false)
+        handleApiError(this, it)
+    }
+
+    /**
+     * Set up network broad cast receiver method will register ConnectionStateMonitor.
+     *
+     */
+    private fun registerNetworkBroadCastReceiver() {
+        connectionStateMonitor = ConnectionStateMonitor(this)
+        connectionStateMonitor.enable(this)
+    }
+
+    /**
+     * On network available method will call when after user enable WIFI or Mobile Data.
+     *
+     * @param network
+     */
+    override fun onNetworkAvailable(network: Network) {
+        println("///// snackBar.isShown "+snackBar.isShown)
+        if (snackBar.isShown) {
+            snackBar.dismiss()
+
+        }
+        managePullToRefresh(false)
+
+    }
+
+    /**
+     * On network disable method will call after user disable WIFI or Mobile Data.
+     *
+     * @param network
+     */
+    override fun onNetworkDisable(network: Network) {
+        if (!NetworkStatus.isInternetAvailable(this)) {
+            snackBar.show()
+        }
+        managePullToRefresh(false)
+    }
+
+    /**
+     * Manage pull to refresh method will call from main thread and background thread both and
+     * this method will able to update refresh listener in Main thread
+     *
+     * @param isRefreshing manage the refresh UI
+     */
+    private fun managePullToRefresh(isRefreshing: Boolean) {
+        CoroutineScope(Dispatchers.Main).async {
+            swipeRefreshLayout.isRefreshing = isRefreshing
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        connectionStateMonitor.unregister()
+    }
 }

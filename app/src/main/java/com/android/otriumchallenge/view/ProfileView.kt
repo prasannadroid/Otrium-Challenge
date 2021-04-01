@@ -26,4 +26,5 @@ interface ProfileView : BaseView {
     fun unknownError()
 
     fun handleApiError(it: Throwable)
+
 }

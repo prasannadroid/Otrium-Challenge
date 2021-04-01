@@ -1,6 +1,5 @@
 package com.android.otriumchallenge
 
-import android.content.Context
 import com.android.otriumchallenge.api.response.UserResponse
 import com.android.otriumchallenge.api.retrofit.EndpointService
 import com.android.otriumchallenge.presenter.ProfilePresenter
